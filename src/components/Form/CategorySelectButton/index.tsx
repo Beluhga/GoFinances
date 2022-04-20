@@ -8,11 +8,15 @@ import {
 
 interface Props {
     title: string;
+    onPress: () => void; // para abrir e fecha a lista de CategorySelect
 }
 
-export function CategorySelect({title, ...rest}: Props){
+export function CategorySelectButton({
+    title,
+    onPress
+}: Props){
     return(
-        <Container>
+        <Container onPress={onPress}>
             <Category>{title}</Category>
             <Icon name="chevron-down" />
         </Container>
