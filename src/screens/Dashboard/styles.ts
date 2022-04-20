@@ -1,7 +1,10 @@
 import styled from 'styled-components/native'; // para poder import o styled-components
+import { FlatList } from 'react-native';
 import{RFPercentage, RFValue} from 'react-native-responsive-fontsize'; // para deixar responsivo com todas as plataformas
-import { Ionicons } from '@expo/vector-icons';
-import { getStatusBarHeight} from 'react-native-iphone-x-helper';
+import { FontAwesome } from '@expo/vector-icons';
+import { getBottomSpace, getStatusBarHeight} from 'react-native-iphone-x-helper';
+
+import {DataListProps} from '.';
 
 
 //aqui é pra exporta todos os components. usar a crase (``) entre eles, usasse do mesmo modo q o CSS as propriedades.
@@ -57,7 +60,7 @@ export const UserName =styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
 `;
 
-export const Icon = styled(Ionicons)` /* forma pra usar um Icones */
+export const Icon = styled(FontAwesome)` /* forma pra usar um Icones */
     color: ${({theme}) => theme.colors.secondary};
     font-size: ${RFValue(24)}px;
 `;
@@ -71,3 +74,25 @@ export const HightlightCards = styled.ScrollView.attrs({ /* o attrs({}) é para 
     position: absolute;
     margin-top: ${RFPercentage(20)}px;
 `;
+
+export const Transactions = styled.View`
+    flex: 1%;
+    padding: 0 24px;
+
+    margin-top: ${RFPercentage(12)}px;
+`;
+export const Title = styled.Text`
+    font-size: ${RFValue(18)}px;
+    font-family: ${({theme}) => theme.fonts.regular};
+
+    margin-bottom: 16px;
+
+`;
+export const TransactionList = styled(
+    FlatList as new () => FlatList<DataListProps> /* uma tipagem personalizada para o FlatList */
+    ).attrs({
+    showsVerticalScrollIndicator: false,
+    contentContainerStyle:{
+    paddingBottom: getBottomSpace() 
+    }
+})``;

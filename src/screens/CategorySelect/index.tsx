@@ -1,0 +1,62 @@
+import React from 'react';
+import { categories } from '../../components/utils/categories';
+import { FlatList } from 'react-native';
+
+import { Button } from '../../components/Form/Button';
+
+import { 
+    Container,
+    Header,
+    Title,
+    Category,
+    Icon,
+    Name,
+    Separator,
+    Footer,
+    
+
+} from './styles';
+
+interface Category{
+    key: string;
+    name: string;
+}
+
+interface Props {
+    category: string;
+    setCategory:(category: Category) => void; // pq nao retorna anda, se coloca void
+    closeSelectCategory: () => void;
+}
+
+export function CategorySelect({
+    category,
+    setCategory,
+    closeSelectCategory,
+
+}: Props){
+    return(
+        <Container>
+            <Header>
+                <Title>Categoria</Title>
+
+            </Header>
+
+            <FlatList 
+                data={categories}
+                style={{flex: 1, width: '100%'}}
+                keyExtractor={(item) => item.key}
+                renderItem={({item}) => (
+                    <Category>
+                        <Icon name={item.icon} />
+                        <Name>{item.name}</Name>
+                    </Category>
+                )}
+                ItemSeparatorComponent={() => <Separator />} /* para fazer as linhas de separação*/
+            />
+
+            <Footer>
+                <Button title="Selecionar" />
+            </Footer>
+        </Container>
+    )
+}
