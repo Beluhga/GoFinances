@@ -1,5 +1,15 @@
 import React, {useState} from 'react';
-import { Modal } from 'react-native'; //// utilizado para abrir e fechar
+import { 
+    Alert,
+    Keyboard,
+    Modal, 
+    TouchableWithoutFeedback 
+    } from 'react-native'; //// Modal utilizado para abrir e fechar
+
+import * as Yup from 'yup';
+import { yupResolver} from '@hookform/resolvers/yup'
+
+
 import { useForm} from 'react-hook-form';
 
 import {Input} from '../../components/Form/Input';
@@ -25,6 +35,17 @@ interface FormData { // foram tipados la nos InputForm
     amount: string;
 }
 
+const schema = Yup.object().shape({ // alidados de formularios
+    name: Yup
+    .string() // o formulario so vai ser valido ser uma string
+    .required('Nome é obrigatorio'), // o formulario so vai ser valido ser obrigatorio
+    amount: Yup
+    .number() // o formulario so vai ser valido ser numero obrigatorio
+    .typeError('Informe um valor númerico') // o formulario so vai ser valido ser for numero
+    .positive('O valor não pode ser negativo') // o formulario so vai ser valido ser pq so pode valor positivo
+    .required('O valor é obrigatorio') // o formulario so vai ser valido ser é obrigatorio coloca um numero
+});  
+
 export function Register(){
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -36,8 +57,11 @@ export function Register(){
 
     const {
         control, // registra os inputs do formulario
-        handleSubmit // pega todos os valores de todos os inputs do formulario e envia uma unica vez
-    } = useForm();
+        handleSubmit, // pega todos os valores de todos os inputs do formulario e envia uma unica vez
+        formState: { errors} // para captura os erros
+    } = useForm({
+        resolver: yupResolver(schema) // para força q o envio de valores, siga um padrao
+    });
 
     function handleTransactionsTypeSelect(type : 'up' | 'down'){ /*  Logica pra quando for clicado o botão pra ficar verde ou vermelho*/
     setTransactionType(type); 
@@ -53,6 +77,13 @@ export function Register(){
     }
 
     function handleRegister(form: FormData){
+        if(!transactionType) // ativa se nao tiver nada em transactionType
+            return Alert.alert('Selecione o tipo da transação');
+
+        if(category.key === 'category') // se a não escolheu uma categoria
+            return Alert.alert('Selecione a categoria');
+
+
         const data={
         name: form.name,
         amount: form.amount,
@@ -65,7 +96,10 @@ export function Register(){
     }
 
     return(
+        //Para fechar o teclado quando clicar em qualquer outra parte //
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
         <Container>
+            
             <Header>
                 <Title>Cadastro</Title>
             </Header>
@@ -76,12 +110,17 @@ export function Register(){
                 name="name"
                 control={control}
                 placeholder='Nome'
+                autoCapitalize="sentences" // para ter a primeira letra maiuscula
+                autoCorrect={false} // para nao corrigir
+                error={errors.name && errors.name.message} // se der erro vai aparecer a mesagem de validação
             />
 
             <InputForm 
                 name="amount"
                 control={control}
                 placeholder='Preço'
+                keyboardType="numeric"
+                error={errors.amount && errors.amount.message}
             />
 
             <TransactionsTypes>
@@ -121,8 +160,9 @@ export function Register(){
             
                 />
             </Modal>
+           
         </Container>
-
+    </TouchableWithoutFeedback>
     )
 }
 
