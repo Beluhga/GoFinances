@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import { Modal } from 'react-native'; //// utilizado para abrir e fechar
+import { useForm} from 'react-hook-form';
 
 import {Input} from '../../components/Form/Input';
+import {InputForm} from '../../components/Form/InputForm';
+
 import {Button} from '../../components/Form/Button';
 import {CategorySelectButton} from '../../components/Form/CategorySelectButton';
 import {TransactionTypeButton} from '../../components/Form/TransactionTypeButton';
@@ -17,17 +20,27 @@ import{
     TransactionsTypes
 } from './styles';
 
+interface FormData { // foram tipados la nos InputForm
+    name: string;
+    amount: string;
+}
+
 export function Register(){
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
-        const [category, setCategory] = useState({ /* para mostras as categorias da lista */
-            key: 'category',
-            name: 'Categoria'
-        });
+    const [category, setCategory] = useState({ /* para mostras as categorias da lista */
+        key: 'category',
+        name: 'Categoria'
+    });
 
-        function handleTransactionsTypeSelect(type : 'up' | 'down'){ /*  Logica pra quando for clicado o botão pra ficar verde ou vermelho*/
-        setTransactionType(type); 
+    const {
+        control, // registra os inputs do formulario
+        handleSubmit // pega todos os valores de todos os inputs do formulario e envia uma unica vez
+    } = useForm();
+
+    function handleTransactionsTypeSelect(type : 'up' | 'down'){ /*  Logica pra quando for clicado o botão pra ficar verde ou vermelho*/
+    setTransactionType(type); 
 
     }
 
@@ -38,7 +51,18 @@ export function Register(){
     function handleCloseSelectCategoryModal(){
         setCategoryModalOpen(false) // para fechar o Modal
     }
-    
+
+    function handleRegister(form: FormData){
+        const data={
+        name: form.name,
+        amount: form.amount,
+        transactionType,
+        category: category.key
+        }
+
+        console.log(data);
+
+    }
 
     return(
         <Container>
@@ -48,11 +72,15 @@ export function Register(){
 
             <Form>
                 <Fields>
-            <Input 
+            <InputForm 
+                name="name"
+                control={control}
                 placeholder='Nome'
             />
 
-            <Input 
+            <InputForm 
+                name="amount"
+                control={control}
                 placeholder='Preço'
             />
 
@@ -78,7 +106,10 @@ export function Register(){
             />
             </Fields>
 
-            <Button title="Enviar" />
+            <Button 
+                title="Enviar" 
+                onPress={handleSubmit(handleRegister)} //para enviar a mensagem
+            />
 
             </Form>
 

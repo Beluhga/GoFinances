@@ -33,7 +33,7 @@ export function CategorySelect({
     closeSelectCategory,
 }: Props){
     function handleCategorySelect( category: Category){ // logica para q quando clicar ele passa o item para dentro do Category
-        setCategory(category);
+        setCategory(category); // para atualizar o estado da função
     }
 
 
@@ -50,8 +50,8 @@ export function CategorySelect({
                 keyExtractor={(item) => item.key}
                 renderItem={({item}) => (
                     <Category
-                        onPress={() => handleCategorySelect(item)}
-                        isActive={category.key === item.key} // para saber se a categoria e a selecionada
+                        onPress={() => handleCategorySelect(item)} // categoria selecionada pelo usuario
+                        isActive={category.key === item.key} // para exibir e a key é para compara
                     >
                         <Icon name={item.icon} />
                         <Name>{item.name}</Name>
