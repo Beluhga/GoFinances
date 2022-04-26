@@ -1,10 +1,11 @@
 import styled from 'styled-components/native'; // para poder import o styled-components
 import { FlatList } from 'react-native';
-import{RFPercentage, RFValue} from 'react-native-responsive-fontsize'; // para deixar responsivo com todas as plataformas
+import{ RFPercentage, RFValue } from 'react-native-responsive-fontsize'; // para deixar responsivo com todas as plataformas
 import { FontAwesome } from '@expo/vector-icons';
 import { getBottomSpace, getStatusBarHeight} from 'react-native-iphone-x-helper';
+import { BorderlessButton } from 'react-native-gesture-handler'
 
-import {DataListProps} from '.';
+import { DataListProps } from '.';
 
 
 //aqui é pra exporta todos os components. usar a crase (``) entre eles, usasse do mesmo modo q o CSS as propriedades.
@@ -59,8 +60,9 @@ export const UserName =styled.Text`
     font-size: ${RFValue(18)}px;
     font-family: ${({theme}) => theme.fonts.bold};
 `;
+export const LogoutButton= styled( BorderlessButton )``;
 
-export const Icon = styled(FontAwesome)` /* forma pra usar um Icones */
+export const Icon = styled( FontAwesome )` /* forma pra usar um Icones */
     color: ${({theme}) => theme.colors.secondary};
     font-size: ${RFValue(24)}px;
 `;

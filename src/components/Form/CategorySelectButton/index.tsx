@@ -1,4 +1,5 @@
 import React from 'react';
+import { TouchableWithoutFeedback  } from 'react-native';
 
 import {
     Container,
@@ -16,9 +17,15 @@ export function CategorySelectButton({
     onPress
 }: Props){
     return(
-        <Container onPress={onPress}>
+        <TouchableWithoutFeedback 
+        onPress={onPress}
+        >
+
+        <Container>
             <Category>{title}</Category>
             <Icon name="chevron-down" />
         </Container>
+        </TouchableWithoutFeedback>
+
     )
 }

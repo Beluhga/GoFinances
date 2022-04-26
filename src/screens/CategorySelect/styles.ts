@@ -1,5 +1,5 @@
-import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { FontAwesome } from '@expo/vector-icons';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -9,13 +9,13 @@ interface CategoryProps { // para q possa usar o isActive dentro do index
 }
 
 
-export const Container = styled.View`
+export const Container = styled(GestureHandlerRootView)` /* Para q o botão de Enviar funcione corretamente no Android dentro da Modal */
     flex: 1;
     background-color: ${({theme}) => theme.colors.background};
     
 `;
 
-export const Header = styled(GestureHandlerRootView)<CategoryProps>` /* Para q o botão de Enviar funcione corretamente no Android dentro da Modal */
+export const Header = styled.View`
     width: 100%;
     height: ${RFValue(113)}px;
 
@@ -31,7 +31,7 @@ export const Title = styled.Text`
     font-size: ${RFValue(18)}px;
 `;
 
-export const Category= styled.TouchableOpacity`
+export const Category= styled.TouchableOpacity<CategoryProps>`
     width: 100%;
     padding: ${RFValue(15)}px;
 

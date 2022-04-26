@@ -2,6 +2,7 @@ import React from 'react';
 import { HightlightCard } from '../../components/HightlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
 
+
 import {
     Container,
     Header,
@@ -15,7 +16,8 @@ import {
     HightlightCards,
     Transactions,
     Title,
-    TransactionList
+    TransactionList,
+    LogoutButton
 
 } from './styles'; // o estilo colocado com "View, Text..." dentro de styles para ficar mais pratico a manutenção
 
@@ -72,8 +74,10 @@ export function Dashboard(){
                             <UserName>Michael</UserName>
                         </User>
                     </UserInfo>
-                    
+                
+                 <LogoutButton>
                     <Icon name="power-off" />
+                 </LogoutButton>
                 </UserWrapper>
             </Header>
 
@@ -113,6 +117,7 @@ export function Dashboard(){
             </Transactions>
 
         </Container>
+
 
     )
 }

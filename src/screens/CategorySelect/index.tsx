@@ -2,6 +2,7 @@ import React from 'react';
 import { categories } from '../../components/utils/categories';
 import { FlatList } from 'react-native';
 
+
 import { Button } from '../../components/Form/Button';
 
 import { 
@@ -49,6 +50,7 @@ export function CategorySelect({
                 style={{flex: 1, width: '100%'}}
                 keyExtractor={(item) => item.key}
                 renderItem={({item}) => (
+                   
                     <Category
                         onPress={() => handleCategorySelect(item)} // categoria selecionada pelo usuario
                         isActive={category.key === item.key} // para exibir e a key é para compara
