@@ -55,17 +55,14 @@ export function Register(){
     const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
-    const dataKey = '@gofinances:transactions'; /* chave da coleção*/
-
-
     const [category, setCategory] = useState({ /* para mostras as categorias da lista */
         key: 'category',
         name: 'Categoria'
     });
 
+    const dataKey = '@gofinances:transactions'; /* chave da coleção*/
+
     const {navigate}: NavigationProp<ParamListBase> = useNavigation();
-
-
 
     const {
         control,                    // registra os inputs do formulario
@@ -95,6 +92,8 @@ export function Register(){
 
         if(category.key === 'category') // se a não escolheu uma categoria
             return Alert.alert('Selecione a categoria');
+
+
 
 
         const newTransaction={

@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { HightlightCard } from '../../components/HightlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 
 import {
@@ -26,41 +29,47 @@ import {
 }
 
 export function Dashboard(){
-    const data: DataListProps[]= [
-        {
-            id: '1',
-            type: 'positive',
-            title: "Desenvolvimento do site",
-            amount:"R$ 12.000,00",
-            category: {
-            name: 'Vendas',
-            icon: 'dollar'
-            },
-            date:"13/04/2022",
-        },
-        {
-            id: '2',
-            type: 'negative',
-            title: "Hamburgueria Pizzy",
-            amount:"R$ 59,00",
-            category: {
-            name: 'Alimentação',
-            icon: 'coffee'
-            },
-            date:"10/04/2022",
-        },
-        {
-            id: '3',
-            type: 'negative',
-            title: "Alugue do apartamento",
-            amount:"R$ 1.200,00",
-            category: {
-            name: 'Casa',
-            icon: 'home'
-        },
-            date:"10/04/2022",
+    const [ data, setData] = useState<DataListProps[]>([]);
+
+    async function loadTransactions(){
+        const dataKey = '@gofinances:transactions';             /* chave da coleção*/
+        const response = await AsyncStorage.getItem(dataKey);
+        const transactions = response ? JSON.parse(response) : [];
+
+        const transactionsFormatted: DataListProps[] = transactions.map(
+            (item: DataListProps) => {    //  Tipagem do TransactionsFormatted e map serve para mapear(pecorer) toda a transação
+                const amount = Number(item.amount)
+                .toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+
+                const date = Intl.DateTimeFormat('pt-BR',{ // 'Intl' e do JS serve para formata os numeros de data
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                }) .format(new Date(item.date));
+
+                return {
+                    id: item.id,
+                    name: item.name,
+                    amount: amount,
+                    type: item.type,
+                    category: item.category,
+                    date,
+                }
+        }); 
+
+            setData(transactionsFormatted);
+            console.log(transactionsFormatted)
+
     }
-];
+
+    useEffect(() => {
+
+        loadTransactions();
+
+    },[]);
 
     return(
         <Container>

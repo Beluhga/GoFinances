@@ -1,7 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import 'react-native-gesture-handler';
-
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 
 
 
