@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator} from 'react-native'
 import { HightlightCard } from '../../components/HightlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
-
+import {useTheme} from 'styled-components';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { useFocusEffect } from '@react-navigation/native'
@@ -20,7 +21,8 @@ import {
     Transactions,
     Title,
     TransactionList,
-    LogoutButton
+    LogoutButton,
+    LoadContainer
 
 } from './styles'; // o estilo colocado com "View, Text..." dentro de styles para ficar mais pratico a manutenção
 
@@ -28,16 +30,40 @@ import {
     id: string;
 }
 
+interface HighlightProps {
+    amount: string;
+}
+interface HightlightData {
+    entries: HighlightProps,
+    expensives: HighlightProps;
+    total: HighlightProps
+}
+
 export function Dashboard(){
-    const [ data, setData] = useState<DataListProps[]>([]);
+    const [isLoading, setIsLoading] = useState(true); // para fazer a tela carrega
+    const [ transactions, setTransactions] = useState<DataListProps[]>([]);
+    const [hightlightData, setHightlightData] = useState<HightlightData>({} as HightlightData);
+
+    const theme = useTheme();
 
     async function loadTransactions(){
         const dataKey = '@gofinances:transactions';             /* chave da coleção*/
         const response = await AsyncStorage.getItem(dataKey);
         const transactions = response ? JSON.parse(response) : [];
 
+        let entriesTotal = 0; // para verificar entradas e saidas
+        let expensiveTotal = 0;
+
         const transactionsFormatted: DataListProps[] = transactions.map(
             (item: DataListProps) => {    //  Tipagem do TransactionsFormatted e map serve para mapear(pecorer) toda a transação
+
+                if(item.type === 'positive'){ // logica da soma de entradas
+                    entriesTotal += Number(item.amount);
+                } else {
+                    expensiveTotal += Number(item.amount);
+
+                }
+
                 const amount = Number(item.amount)
                 .toLocaleString('pt-BR', {
                     style: 'currency',
@@ -60,8 +86,30 @@ export function Dashboard(){
                 }
         }); 
 
-            setData(transactionsFormatted);
-            console.log(transactionsFormatted)
+        const total = entriesTotal - expensiveTotal;
+
+        setTransactions(transactionsFormatted);
+        setHightlightData({
+            entries: {
+                amount: entriesTotal.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                })
+            },
+            expensives: {
+               amount: expensiveTotal.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            } )
+          },
+          total: {
+                amount: total.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            } )
+          }
+        });
+        setIsLoading(false); // para quando terminar de carrega ele cancelar o carregamento      
 
     }
 
@@ -79,6 +127,10 @@ export function Dashboard(){
 
     return(
         <Container>
+          
+          {
+              isLoading ? <LoadContainer><ActivityIndicator color={theme.colors.primary} size="large"/></LoadContainer>: // logica para fazer o carregamento
+          <>
             <Header>
                 <UserWrapper>
                     <UserInfo>
@@ -100,21 +152,21 @@ export function Dashboard(){
             <HightlightCard
              type='up' 
              title="Entradas"  
-             amount="R$17.400,00" 
+             amount={hightlightData.entries.amount} 
              lastTransaction='Última entrada dia 13 de abril'
             />
 
             <HightlightCard
              type='down' 
              title="Saídas"  
-             amount="R$1.259,00" 
+             amount={hightlightData.expensives.amount} 
              lastTransaction='Última saída dia 03 de abril'
             />
 
             <HightlightCard
              type='total' 
              title="Total"  
-             amount="R$16,141,00" 
+             amount={hightlightData.total.amount} 
              lastTransaction='01 à 16 de abril'
             />
             
@@ -124,16 +176,15 @@ export function Dashboard(){
             <Transactions>
                 <Title>Listagem</Title>
                 <TransactionList
-                    data={data}
+                    data={transactions}
                     keyExtractor={item => item.id}
                     renderItem={({ item }) => <TransactionCard data={item}  />}
                   
                 />
             </Transactions>
-
+          </>
+        }
         </Container>
-
-
     )
 }
 
