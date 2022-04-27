@@ -40,7 +40,7 @@ interface FormData {                  // foram tipados la nos InputForm
     amount: string;
 }
 
-
+const dataKey = '@gofinances:transactions';
 
 const schema = Yup.object().shape({   // alidados de formularios
     name: Yup.string().required('Nome é obrigatorio'),                        // o formulario so vai ser valido ser uma string // o formulario so vai ser valido ser obrigatorio
@@ -60,8 +60,6 @@ export function Register(){
         name: 'Categoria'
     });
 
-    const dataKey = '@gofinances:transactions'; /* chave da coleção*/
-
     const {navigate}: NavigationProp<ParamListBase> = useNavigation();
 
     const {
@@ -73,7 +71,7 @@ export function Register(){
         resolver: yupResolver(schema) // para força q o envio de valores, siga um padrao
     });
 
-    function handleTransactionsTypeSelect(type : 'up' | 'down'){ /*  Logica pra quando for clicado o botão pra ficar verde ou vermelho*/
+    function handleTransactionsTypeSelect(type : 'positive' | 'negative'){ /*  Logica pra quando for clicado o botão pra ficar verde ou vermelho*/
     setTransactionType(type); 
 
     }
@@ -93,14 +91,11 @@ export function Register(){
         if(category.key === 'category') // se a não escolheu uma categoria
             return Alert.alert('Selecione a categoria');
 
-
-
-
         const newTransaction={
         id: String(uuid.v4()),      // para salvar como uma string
         name: form.name,
         amount: form.amount,
-        transactionType,
+        type: transactionType,
         category: category.key,
         date: new Date()
         }
@@ -180,15 +175,15 @@ export function Register(){
             <TransactionTypeButton 
                 type= "up"
                 title= "Income"
-                onPress= {() => handleTransactionsTypeSelect('up')}
-                isActive={transactionType === 'up'} //Caso estiver ativo //
+                onPress= {() => handleTransactionsTypeSelect('positive')}
+                isActive={transactionType === 'positive'} //Caso estiver ativo //
             />
 
             <TransactionTypeButton 
                 type= "down"
                 title= "Outcome"
-                onPress= {() => handleTransactionsTypeSelect('down')}
-                isActive={transactionType === 'down'} //Caso estiver ativo //
+                onPress= {() => handleTransactionsTypeSelect('negative')}
+                isActive={transactionType === 'negative'} //Caso estiver ativo //
             />
             </TransactionsTypes>
 

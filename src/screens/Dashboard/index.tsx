@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { HightlightCard } from '../../components/HightlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-
+import { useFocusEffect } from '@react-navigation/native'
 
 import {
     Container,
@@ -66,10 +66,16 @@ export function Dashboard(){
     }
 
     useEffect(() => {
-
         loadTransactions();
 
+        /* const dataKey = '@gofinances:transactions';             
+        const response = await AsyncStorage.getItem(dataKey);  Para limpar o cadastro */
     },[]);
+
+    useFocusEffect(useCallback(() => {
+        loadTransactions();
+    },[])); 
+
 
     return(
         <Container>
