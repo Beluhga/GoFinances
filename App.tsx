@@ -3,8 +3,9 @@ import { ThemeProvider } from 'styled-components';
 import 'react-native-gesture-handler';
 import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
+import { StatusBar } from 'react-native';
 
-
+import { Signin } from './src/screens/Signin';
 
 import AppLoading from 'expo-app-loading';
 
@@ -37,7 +38,8 @@ export default function App() {
   return (
   <ThemeProvider theme={theme}> 
     <NavigationContainer>
-    <AppRoutes />
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent/>
+    <Signin />
     </NavigationContainer>
   </ThemeProvider>
   )
