@@ -5,7 +5,9 @@ import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
 import { StatusBar } from 'react-native';
 
-import { Signin } from './src/screens/Signin';
+import { SignIn } from './src/screens/Signin';
+
+import { AuthContext } from './src/AuthContext';
 
 import AppLoading from 'expo-app-loading';
 
@@ -39,7 +41,11 @@ export default function App() {
   <ThemeProvider theme={theme}> 
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent/>
-    <Signin />
+
+        <AuthContext.Provider value={['Fernando']}>
+          <SignIn />
+        </AuthContext.Provider>
+
     </NavigationContainer>
   </ThemeProvider>
   )
