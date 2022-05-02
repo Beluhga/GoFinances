@@ -24,6 +24,8 @@ import theme from './src/global/styles.ts/theme';
 import {NavigationContainer} from '@react-navigation/native';
 import {AppRoutes} from './src/routes/app.routes';
 
+import { AuthProvider } from './src/hooks/auth';
+
 
 
 export default function App() {
@@ -42,9 +44,9 @@ export default function App() {
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent/>
 
-        <AuthContext.Provider value={['Fernando']}>
+        <AuthProvider>
           <SignIn />
-        </AuthContext.Provider>
+        </AuthProvider>
 
     </NavigationContainer>
   </ThemeProvider>
