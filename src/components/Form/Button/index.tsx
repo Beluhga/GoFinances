@@ -1,7 +1,7 @@
 import React from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
 import{ Container, Title} from './styled';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableNativeFeedback } from 'react-native';
 
 interface Props extends RectButtonProps{ /* feito para tipar */
     title: string;
@@ -14,7 +14,7 @@ export function Button({
     onPress,
     ...rest}: Props){
     return(
-        <TouchableWithoutFeedback
+        <TouchableNativeFeedback
             onPress={onPress}
         >
         <Container  {...rest}>
@@ -22,6 +22,6 @@ export function Button({
                 {title}
             </Title>
         </Container>
-        </TouchableWithoutFeedback>
+        </TouchableNativeFeedback>
     )
 }

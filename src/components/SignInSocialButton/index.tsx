@@ -1,5 +1,4 @@
 import React from 'react';
-import { RectButtonProps} from 'react-native-gesture-handler';
 import { SvgProps } from 'react-native-svg';
 import {
     Button,
@@ -7,8 +6,9 @@ import {
     Text,
 } from './styles';
 
+import { TouchableNativeFeedbackProps} from 'react-native';
 
-interface Props extends RectButtonProps {
+interface Props extends TouchableNativeFeedbackProps {
     title: string;
     svg: React.FC<SvgProps>
 }
@@ -19,14 +19,22 @@ export function SignInSocialButton({
     ...rest
 }: Props){
     return (
+             
+        <Button  {...rest} >
         
-        <Button {...rest}>
-            <ImageContainer>
-                <Svg />
-            </ImageContainer>
-
+            <ImageContainer >
+            <Svg />
             <Text>{title}</Text>
+            </ImageContainer>
+            
+            
         </Button>
+        
+
+        
+
+        
+        
         
     )
 }
