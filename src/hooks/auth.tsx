@@ -2,7 +2,10 @@ import React from 'react';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 import * as AuthSession from 'expo-auth-session';
-import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
+
+const {CLIENT_ID} = process.env;
+const {REDIRECT_URI} = process.env;
+
 
 
 interface AuthProviderProps {
@@ -35,8 +38,6 @@ const AuthContext = createContext({} as IAuthContextData);
 
      async function signInWithGoogle() {
         try{
-         const CLIENT_ID = '1014778003649-1nh2cgd5lao6vga0ef0g429h9k1rhamc.apps.googleusercontent.com';
-         const REDIRECT_URI = 'https://auth.expo.io/@michaelalbuquerque/gofincances';
          const RESPONSE_TYPE = 'token';
          const SCOPE = encodeURI('profile email'); // para poder ser compreensivo na URL
 
@@ -47,6 +48,7 @@ const AuthContext = createContext({} as IAuthContextData);
          if (type === 'success') {
              const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
              const userInfo = await response.json();
+             console.log(userInfo);
              
 
             setUser({
