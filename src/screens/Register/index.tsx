@@ -34,13 +34,13 @@ import{
     Fields,
     TransactionsTypes
 } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 interface FormData {                  // foram tipados la nos InputForm
     name: string;
     amount: string;
 }
 
-const dataKey = '@gofinances:transactions';
 
 const schema = Yup.object().shape({   // alidados de formularios
     name: Yup.string().required('Nome é obrigatorio'),                        // o formulario so vai ser valido ser uma string // o formulario so vai ser valido ser obrigatorio
@@ -59,6 +59,10 @@ export function Register(){
         key: 'category',
         name: 'Categoria'
     });
+
+    const {user} = useAuth()
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
+
 
     const {navigate}: NavigationProp<ParamListBase> = useNavigation();
 

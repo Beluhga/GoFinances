@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { HistoryCard } from '../../components/HistoryCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VictoryPie } from 'victory-native';
@@ -23,6 +23,7 @@ import {
 } from './styles';
 import { categories } from '../../components/utils/categories';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { useAuth } from '../../hooks/auth';
 
 interface TransactionData{
     type: 'positive' | 'negative';
@@ -48,6 +49,7 @@ interface CategoryData{
     const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
 
     const theme = useTheme();
+    const {user} = useAuth();
 
     function handleDateChange(action: 'next' | 'prev'){ // logica para mudar o mes do grafico
         if(action === 'next'){
@@ -59,7 +61,7 @@ interface CategoryData{
 
     async function loadData(){
         setIsLoading(true);
-        const dataKey = '@gofinances:transactions';
+        const dataKey = `@gofinances:transactions_user:${user.id}`;
         const response = await AsyncStorage.getItem(dataKey);
         const responseFormatted = response ? JSON.parse(response) : [];
 
