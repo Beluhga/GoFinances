@@ -6,7 +6,7 @@
 
 GoFinances é um aplicatico Mobile com React-Native
 
-A aplicação consiste em um controle de financas.
+A aplicação consiste em um controle de financas, usando o AsyncStorage para fazer o armazenamento do dados no proprio mobile.
 
 ## Layout mobile
 ![20220728_013524](https://user-images.githubusercontent.com/82901722/181424646-5f3d8505-23ea-45f2-bb4e-23a80a79f17a.gif)
