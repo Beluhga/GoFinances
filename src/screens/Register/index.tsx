@@ -60,11 +60,7 @@ export function Register(){
         name: 'Categoria'
     });
 
-    const {user} = useAuth()
-    const dataKey = `@gofinances:transactions_user:${user.id}`;
-
-
-    const {navigate}: NavigationProp<ParamListBase> = useNavigation();
+    const {user} = useAuth();
 
     const {
         control,                    // registra os inputs do formulario
@@ -105,7 +101,7 @@ export function Register(){
         }
 
         try {  
-
+            const dataKey = `@gofinances:transactions_user:${user.id}`;
             /*estrutura para tratar o erro (try - tentar) - (catch - é para ver oq q tem de errado) */
             const data = await AsyncStorage.getItem(dataKey);
             const currentData = data ? JSON.parse(data) : [];
@@ -123,7 +119,8 @@ export function Register(){
                 key: 'category',
                 name: 'Categoria' 
             });
-            
+            const {navigate}: NavigationProp<ParamListBase> = useNavigation();
+
             navigate('Listagem');        // esta em routes ( é uma rota)
 
         }   catch (error){
@@ -131,7 +128,7 @@ export function Register(){
             Alert.alert("Não foi possível salvar")
     }}
 
-    useEffect(() => {
+    /* useEffect(() => {
         async function loadData(){
 
         const data = await AsyncStorage.getItem(dataKey);
@@ -143,9 +140,9 @@ export function Register(){
             await AsyncStorage.removeItem(dataKey);
         }
 
-        removeAll();*/
+        removeAll();
 
-    },[]);
+    },[]);*/ 
 
     return(
         //Para fechar o teclado quando clicar em qualquer outra parte //
@@ -192,6 +189,7 @@ export function Register(){
             </TransactionsTypes>
 
             <CategorySelectButton 
+                testID='button-category'
                 title={category.name} // para aparecer o nome da categoria selecionada
                 onPress={handleOpenSelectCategoryModal} // p modal chama essa OpenSelect
             />
@@ -204,7 +202,7 @@ export function Register(){
 
             </Form>
 
-            <Modal visible={categoryModalOpen}> 
+            <Modal testID="modal-category" visible={categoryModalOpen}> 
                 <CategorySelect
                         category= {category} // o estado atual
                         setCategory= {setCategory} // para mudar o estado
